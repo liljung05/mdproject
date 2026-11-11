@@ -1,0 +1,40 @@
+<!doctype html>
+<!-- Created with OpenAI ChatGPT. Reference: the user's 10×10 colored dot image. -->
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chromatic Dots</title>
+<style>
+:root { color-scheme: light; --paper:#fff; --duration:220ms; }
+* { box-sizing:border-box; }
+body { margin:0; min-height:100svh; background:var(--paper); display:grid; place-items:center; }
+.grid { width:min(900px, 100vw, 100svh); aspect-ratio:1; padding:3.5%; display:grid; grid-template-columns:repeat(10,minmax(0,1fr)); grid-template-rows:repeat(10,minmax(0,1fr)); }
+.cell { display:grid; place-items:center; min-width:0; min-height:0; }
+.dot { display:block; flex:none; padding:0; border:0; border-radius:50%; width:var(--size); max-width:81.25%; aspect-ratio:1; background:var(--color); cursor:pointer; transition:transform var(--duration) ease,filter var(--duration) ease; -webkit-tap-highlight-color:transparent; }
+.dot:hover, .dot:focus-visible, .dot:active { transform:scale(1.2); filter:grayscale(1); }
+.dot:focus-visible { outline:2px solid #222; outline-offset:5px; }
+@media(max-width:900px),(max-height:900px) { .dot { width:calc(var(--ratio) * 100%); } }
+@media(prefers-reduced-motion:reduce) { .dot { transition:none; } }
+</style>
+</head>
+<body>
+<main class="grid" aria-label="Chromatic Dots: 점에 마우스를 올리면 20% 커지고 무채색으로 바뀝니다."></main>
+<script>
+const palette = {r:'#EF4444',o:'#F97316',y:'#EAB308',g:'#22C55E',b:'#3B82F6',v:'#8B5CF6',p:'#EC4899'};
+// Colors and relative sizes follow the reference image. Diameter = 50px × 20–130%.
+const colors = ['ygvrbpoygv','pobygrvybo','byvpogovrb','grybvpggrb','vgobr ypgvo'.replaceAll(' ',''),'ypbogv bryg'.replaceAll(' ',''),'ovgy pbor rv'.replaceAll(' ',''),'brpgvoybpg','gbyrvopgyb','pog ybrpvog'.replaceAll(' ','')];
+const sizes = [[52,25,63,48,28,64,52,25,63,53],[25,64,50,25,57,24,54,61,47,26],[65,47,24,65,51,47,27,65,48,65],[46,25,61,47,47,64,25,50,58,25],[52,64,48,25,63,52,64,25,54,52],[26,53,64,50,25,49,64,47,54,64],[64,25,48,60,48,25,47,62,26,50],[52,48,23,60,52,64,45,25,63,24],[25,64,45,51,65,24,52,53,65,52],[53,49,64,25,52,47,64,25,64,48]];
+const grid=document.querySelector('.grid');
+for(let row=0;row<10;row++) for(let col=0;col<10;col++) {
+  const cell=document.createElement('div'); cell.className='cell';
+  const dot=document.createElement('button'); dot.className='dot'; dot.type='button';
+  dot.style.setProperty('--size',sizes[row][col]+'px');
+  dot.style.setProperty('--ratio',sizes[row][col]/80);
+  dot.style.setProperty('--color',palette[colors[row][col]]);
+  dot.setAttribute('aria-label',`${row+1}행 ${col+1}열 점`);
+  cell.append(dot);grid.append(cell);
+}
+</script>
+</body>
+</html>
